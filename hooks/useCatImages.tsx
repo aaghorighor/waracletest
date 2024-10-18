@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import * as FileSystem from "expo-file-system";
 import Constants from "expo-constants";
-
 export interface Cat {
 	id: string;
 	url: string;
@@ -49,8 +47,7 @@ const useCatImages = () => {
 				loading: false,
 				error: null,
 			}));
-		} catch (err) {
-			console.error('Error fetching cat images:', err);
+		} catch (err) {			
 			setCats((prev) => ({
 				...prev,
 				error: new Error("Failed to fetch cat images. Please try again."),
