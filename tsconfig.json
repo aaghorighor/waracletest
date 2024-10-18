@@ -2,6 +2,11 @@
 	"extends": "expo/tsconfig.base",
 	"compilerOptions": {
 		"jsx": "react",
-		"strict": true
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "es5",
+		"module": "commonjs",
+		"types": ["jest"],
+		"skipLibCheck": true
 	}
 }
