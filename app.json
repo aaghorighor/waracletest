@@ -6,8 +6,12 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "extra": {
+      "apiUrl": "https://api.thecatapi.com",
+      "apiKey": "live_0rhh1Fakl9LkwqByVQyWdnidGs1LRUnyywXWbSubfVFLobznnZXpqMmkZbvDim9M"
+    },
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/cat_2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,12 +20,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/cat_6.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "assetBundlePatterns": [
+      "assets/fonts/*"
+    ]
   }
 }
