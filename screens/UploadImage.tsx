@@ -12,9 +12,9 @@ import {
     FlexStyledImage,
 } from "fluent-styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { fontStyles, theme } from "../utils/theme";
+import { theme } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
-import { Cat, useCatImages } from "../hooks/useCatImages";
+import { useUploadImage } from "../hooks/useCatImages";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AppStackParamList } from "../navigation/RootStackParamList";
 import * as ImagePicker from "expo-image-picker";
@@ -27,7 +27,7 @@ type UploadImageScreenNavigationProp = StackNavigationProp<
 const UploadImage = () => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const navigation = useNavigation<UploadImageScreenNavigationProp>();
-    const { data, error, loading, handleReset, handleUpload } = useCatImages()
+    const { data, error, loading, handleReset, handleUpload } = useUploadImage()
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -53,7 +53,7 @@ const UploadImage = () => {
                 marginRight: 8
             }} />
         </StyledHeader>
-        <YStack flex={1} paddingVertical={8} paddingHorizontal={8} backgroundColor={theme.colors.gray[100]}>
+        <YStack flex={1} paddingVertical={8} paddingHorizontal={8} justifyContent='flex-start' alignItems='center' backgroundColor={theme.colors.gray[100]}>
             <XStack justifyContent="center" alignItems="center">
                 <FlexStyledImage borderRadius={15} borderWidth={5} borderColor={theme.colors.gray[100]} height={250} width={250} imageUrl={imageUrl} />
                 <XStack absolute right={40} bottom={-80}>
@@ -61,7 +61,7 @@ const UploadImage = () => {
                 </XStack>
             </XStack>
             <StyledSpacer marginVertical={8} />
-            <StyledButton backgroundColor={theme.colors.cyan[500]} onPress={() => handleSubmit()}>
+            <StyledButton width={'90%'} backgroundColor={theme.colors.cyan[500]} onPress={() => handleSubmit()}>
                 <StyledText paddingHorizontal={20} paddingVertical={10} color={theme.colors.gray[1]}>
                     Upload
                 </StyledText>

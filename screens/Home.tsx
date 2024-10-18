@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	YStack,
 	XStack,
 	StyledSafeAreaView,
-	StyledCycle,
-	StyledText,
+	StyledCycle,	
 	StyledHeader,
 	StyledSpacer,
 	StyledOkDialog,
 	StyledSpinner,
 	FlexStyledImage,
-	StyledCard,
+	StyledText	
 } from "fluent-styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { fontStyles, theme } from "../utils/theme";
-import { Cat, useCatImages } from "../hooks/useCatImages";
+import { useCatImages } from "../hooks/useCatImages";
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AppStackParamList } from "../navigation/RootStackParamList";
+import ImageCard from "../components/ImageCard";
 
 type HomeScreenNavigationProp = StackNavigationProp<AppStackParamList, 'home'>;
 
@@ -35,52 +35,7 @@ const Home = () => {
 		if (!loading) {
 			setPage((prevPage) => prevPage + 1);
 		}
-	};
-
-	const RenderImage = ({ item }: { item: Cat }) => {
-
-		return (
-			<StyledCard
-				marginBottom={8}
-				borderColor={theme.colors.gray[300]}
-				backgroundColor={theme.colors.gray[200]}
-				shadow='light'
-				marginHorizontal={4}
-				borderRadius={15}
-				flex={1}
-			>
-				<FlexStyledImage
-					local={false}
-					borderRadius={15}
-					height={180}
-					flex={1}
-					imageUrl={item.url}
-				>
-				</FlexStyledImage>
-
-				<XStack
-					paddingVertical={8}
-					paddingHorizontal={8}
-					marginHorizontal={8}
-					marginVertical={8}
-					justifyContent='flex-start' alignItems='center'
-					backgroundColor={theme.colors.gray[50]}
-					borderRadius={30}
-				>
-					<Icon size={26} name='thumb-up-off-alt' color={theme.colors.gray[500]} onPress={async () => await handleVote(item.id, "up")} />
-					<StyledText paddingHorizontal={8} fontFamily={fontStyles.Roboto_Regular} fontWeight={theme.fontWeight.bold} fontSize={theme.fontSize.large} color={theme.colors.gray[800]}>
-						{item.score} {item.isFavourite}
-					</StyledText>
-					<Icon size={26} name='thumb-down-off-alt' color={theme.colors.gray[500]} onPress={async () => await handleVote(item.id, "down")} />
-					<StyledSpacer flex={1} />
-					<StyledCycle height={26} width={26} borderWidth={1} borderColor={theme.colors.gray[100]} backgroundColor={theme.colors.gray[100]}>
-						<Icon size={24} name={item.isFavourite ? 'favorite' : 'favorite-outline'} color={theme.colors.red[500]} onPress={async () => await handleFavourite(item.id)} />
-					</StyledCycle>
-				</XStack>
-
-			</StyledCard>
-		)
-	}
+	};	
 
 	const RenderHeader = () => {
 		return (
@@ -91,8 +46,16 @@ const Home = () => {
 					height={48}
 					width={48}
 					imageUrl={require("../assets/cat_2.png")}
-				/>
-				<StyledSpacer marginHorizontal={4} />
+				/>				
+				<StyledText
+					paddingHorizontal={8}
+					fontFamily={fontStyles.Roboto_Regular}
+					fontWeight={theme.fontWeight.normal}
+					fontSize={theme.fontSize.large}
+					color={theme.colors.gray[800]}
+				>
+					Cat Gallery
+				</StyledText>
 				<StyledSpacer flex={1} />
 				<StyledCycle height={48} width={48} borderWidth={1} borderColor={theme.colors.cyan[500]} backgroundColor={theme.colors.cyan[500]}>
 					<Icon size={24} name='add' color={theme.colors.gray[1]} onPress={() => navigation.navigate('uploadImage')} />
@@ -122,7 +85,7 @@ const Home = () => {
 					keyExtractor={(item) => item.id}
 					renderItem={({ item, index }) => {
 						return (
-							<RenderImage item={item} key={`${index}-${item.id}`} />
+							<ImageCard item={item} key={`${index}-${item.id}`} handleFavourite={handleFavourite} handleVote={handleVote} />
 						)
 					}}
 					onEndReached={loadMoreCats}

@@ -19,9 +19,10 @@ interface Initialize {
 	loading: boolean;
 }
 
+const CAT_API_KEY = Constants.expoConfig?.extra?.apiKey;
+const CAT_BASE_URL = Constants.expoConfig?.extra?.apiUrl;
+
 const useCatImages = () => {
-	const CAT_API_KEY = Constants.expoConfig?.extra?.apiKey;
-	const CAT_BASE_URL = Constants.expoConfig?.extra?.apiUrl;
 
 	const [cats, setCats] = useState<Initialize>({
 		data: [],
@@ -30,7 +31,7 @@ const useCatImages = () => {
 	});
 
 	const fetchCats = async (page: number = 1) => {
-		setCats((prev) => ({ ...prev, loading: true }));
+		setCats((prev) => ({ ...prev, loading: true, error: null }));
 		try {
 			const response = await axios.get(`${CAT_BASE_URL}/v1/images/search`, {
 				headers: {
@@ -38,17 +39,18 @@ const useCatImages = () => {
 				},
 				params: {
 					limit: 10,
-					page,
+					page
 				},
 			});
+
 			setCats((prevCats) => ({
 				...prevCats,
-				data: prevCats.data
-					? [...prevCats.data, ...response.data]
-					: response.data,
+				data: prevCats.data ? [...prevCats.data, ...response.data] : response.data,
 				loading: false,
+				error: null,
 			}));
 		} catch (err) {
+			console.error('Error fetching cat images:', err);
 			setCats((prev) => ({
 				...prev,
 				error: new Error("Failed to fetch cat images. Please try again."),
@@ -56,7 +58,6 @@ const useCatImages = () => {
 			}));
 		}
 	};
-
 	useEffect(() => {
 		fetchCats(1);
 	}, []);
@@ -76,13 +77,13 @@ const useCatImages = () => {
 					data: prev.data?.map((c) =>
 						c.id === catId
 							? {
-									...c,
-									score:
-										voteType === "up" ? (c.score || 0) + 1 : (c.score || 0) - 1,
-							  }
+								...c,
+								score:
+									voteType === "up" ? (c.score || 0) + 1 : (c.score || 0) - 1,
+							}
 							: c,
 					),
-					loading : false
+					loading: false
 				}));
 			}
 		} catch (err) {
@@ -111,7 +112,7 @@ const useCatImages = () => {
 							? { ...c, isFavourite: false, favouriteId: undefined }
 							: c,
 					),
-					loading : false
+					loading: false
 				}));
 			} else {
 				const response = await axios.post(
@@ -130,7 +131,7 @@ const useCatImages = () => {
 							? { ...c, isFavourite: true, favouriteId: response.data.id }
 							: c,
 					),
-					loading : false
+					loading: false
 				}));
 			}
 		} catch (err) {
@@ -144,21 +145,35 @@ const useCatImages = () => {
 		}
 	};
 
+	const handleReset = () => {
+		setCats((prev) => ({ ...prev, error: null }));
+	};
+
+	return {
+		...cats,
+		handleFavourite,
+		fetchCats,
+		handleVote,
+		handleReset,
+	};
+};
+
+const useUploadImage = () => {
+	const [cats, setCats] = useState<Initialize>({
+		data: [],
+		error: null,
+		loading: false,
+	});
+
 	const handleUpload = async (fileUri: string) => {
 		setCats((prev) => ({ ...prev, loading: true }));
 
-		const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
-			encoding: FileSystem.EncodingType.Base64,
-		});
-
-		console.log("...................imageUrl", fileUri);
-
 		const formData = new FormData();
 		formData.append("file", {
-			uri: `data:image/jpeg;base64,${fileBase64}`,
+			uri: fileUri,
 			name: fileUri.split("/").pop() || "cat.jpg",
 			type: "image/jpeg",
-			sub_id: "wdddddddddddddddddddddddd",
+			sub_id: "abel-90988",
 		} as any);
 
 		try {
@@ -188,6 +203,7 @@ const useCatImages = () => {
 				loading: false,
 			}));
 		}
+
 	};
 
 	const handleReset = () => {
@@ -195,13 +211,10 @@ const useCatImages = () => {
 	};
 
 	return {
-		handleUpload,
 		...cats,
-		handleFavourite,
-		fetchCats,
-		handleVote,
-		handleReset,
-	};
+		handleUpload,
+		handleReset
+	}
 };
 
-export { useCatImages };
+export { useCatImages, useUploadImage };
