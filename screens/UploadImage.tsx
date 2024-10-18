@@ -61,7 +61,7 @@ const UploadImage = () => {
                 </XStack>
             </XStack>
             <StyledSpacer marginVertical={8} />
-            <StyledButton width={'90%'} backgroundColor={theme.colors.cyan[500]} onPress={() => handleSubmit()}>
+            <StyledButton width={'90%'} backgroundColor={theme.colors.cyan[500]} onPress={() => imageUrl && handleSubmit()}>
                 <StyledText paddingHorizontal={20} paddingVertical={10} color={theme.colors.gray[1]}>
                     Upload
                 </StyledText>
