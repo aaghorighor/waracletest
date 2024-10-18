@@ -195,8 +195,7 @@ const useUploadImage = () => {
 					loading: false,
 				}));
 			}
-		} catch (err) {
-			console.log("..........................", err);
+		} catch (err) {			
 			setCats((prev) => ({
 				...prev,
 				error: new Error("Failed to upload image. Please try again."),
