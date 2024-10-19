@@ -47,7 +47,7 @@ const useCatImages = () => {
 				loading: false,
 				error: null,
 			}));
-		} catch (err) {			
+		} catch (err) {
 			setCats((prev) => ({
 				...prev,
 				error: new Error("Failed to fetch cat images. Please try again."),
@@ -156,8 +156,12 @@ const useCatImages = () => {
 };
 
 const useUploadImage = () => {
-	const [cats, setCats] = useState<Initialize>({
-		data: [],
+	const [cats, setCats] = useState<{
+		data: Cat | null | undefined;
+		error: Error | null;
+		loading: boolean;
+	}>({
+		data: null,
 		error: null,
 		loading: false,
 	});
@@ -192,10 +196,10 @@ const useUploadImage = () => {
 					loading: false,
 				}));
 			}
-		} catch (err) {			
+		} catch (err) {
 			setCats((prev) => ({
 				...prev,
-				error: new Error("Failed to upload image. Please try again."),
+				error: new Error("Failed to upload image."),
 				loading: false,
 			}));
 		}

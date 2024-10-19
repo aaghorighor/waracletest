@@ -42,18 +42,18 @@ const ImageCard: React.FC<ImageCardProps> = ({
 
 			<XStack
 				paddingVertical={8}
-				paddingHorizontal={8}
+				paddingHorizontal={16}
 				marginHorizontal={8}
 				marginVertical={8}
 				justifyContent="flex-start"
 				alignItems="center"
 				backgroundColor={theme.colors.gray[50]}
-				borderRadius={15}
+				borderRadius={30}
 			>
 				<Icon
 					size={26}
 					name="thumb-up-off-alt"
-					color={theme.colors.gray[500]}
+					color={theme.colors.gray[400]}
 					onPress={async () => await handleVote(item.id, "up")}
 				/>
 				<StyledText
@@ -68,7 +68,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
 				<Icon
 					size={26}
 					name="thumb-down-off-alt"
-					color={theme.colors.gray[500]}
+					color={theme.colors.gray[400]}
 					onPress={async () => await handleVote(item.id, "down")}
 				/>
 				<StyledSpacer flex={1} />

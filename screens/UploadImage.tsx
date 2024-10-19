@@ -80,9 +80,9 @@ const UploadImage = () => {
             )
         }
         {
-            // data && (
-            //     navigation.goBack()
-            // )
+            data && (
+                navigation.goBack()
+            )
         }
     </StyledSafeAreaView>;
 }
